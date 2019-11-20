@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>computed 속성</h1>
+      <h3>
+        템플릿 내에 표현식은 유지보수가 어려워지므로 간단한 연산일때만 사용할것
+        <br />
+        복잡한 표현은 computed 속성을 사용해서 el의 data를 연산하고 결과를
+        리턴하는 함수를 호출한다. <br />
+        computed에 선언된 함수는 vm.속성에 대한 getter 함수로 호출된다
+        (vm.reversedMessage()가 아니라 vm.reversedMessage로 호출)
+      </h3>
+      <div>
+        {{ message.split('').reverse().join('') }}
+      </div>
+
+      <p>원본 메시지 : "{{message}}"</p>
+      <p>역순으로 표현한 메세지 : "{{ reversedMessage1 }}"</p>
+      <h3>
+        최종결과는 computed , methods 속성 모두 동일하다.<br />차이점은 computed
+        속성은 종속 대상을 따라 캐싱됨=> 종속 대상이 변경될 때만 함수를
+        실행한다.
+      </h3>
+      <p>methods로 접근한 뒤집힌 메시지: "{{ reversedMessage() }}"</p>
+      <p>computed: "{{ now1 }}"</p>
+      <p>methods: "{{ now() }}"</p>
+    </div>
+  </div>
+
+  <div>
+    <h1>compute vs watch</h1>
+    <h3>
+      데이터 변경을 관찰하려면 watch 속성사용 <br />
+      하지만 watch(함수형)보다 computed(선언형)를 사용하는것을 추천합니다.
+    </h3>
+    <div id="app2">{{ fullName }}</div>
+    <div id="app3">{{ fullName }}</div>
+    <div id="app4">{{ fullName }}</div>
+  </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        message: "테스트용메세지",
+      },
+      computed: {
+        // 계산된 getter, vm.message 속성과 의존관계 성립
+        reversedMessage1: function() {
+          return this.message
+            .split("")
+            .reverse()
+            .join("");
+        },
+        now1: function() {
+          // Date.new()는 어디에서도 변경되지 않으므로 한번 호출된 뒤에 변경되지 않게된다.
+          console.log("computed 실행");
+          return Date.now();
+        }
+      },
+      methods: {
+        reversedMessage: function() {
+          return this.message
+            .split("")
+            .reverse()
+            .join("");
+        },
+        now: function() {
+          console.log("methods 실행");
+          // Date.new()는 어디에서도 변경되지 않으므로 한번 호출된 뒤에 변경되지 않게된다.
+          return Date.now();
+        }
+      }
+    });
+
+    // computed
+    var vm = new Vue({
+      el: '#app3',
+      data: {
+        firstName: 'Foo',
+        lastName: 'Bar',
+      },
+      computed: {
+        fullName: function() {
+          return this.firstName + ' ' + this.lastName
+        }
+      }
+    })
+
+    // watch
+    new Vue({
+      el : '#app2',
+      data : {
+        firstName: "Foo",
+        lastName: "Bar",
+      }, 
+      computed : {
+        fullName: function() {
+          return this.firstName + " " + this.lastName;
+        },
+      },
+      watch : {
+        firstName: function(val) {
+        this.fullName = val + " " + this.lastName;
+        },
+        lastName: function(val) {
+          this.fullName = this.firstName + " " + val;
+        }
+      }
+    });
+
+    // computed setter
+    var vm4 = new Vue({
+      el: '#app4',
+      data: {
+        firstName: 'Foo',
+        lastName: 'Bar',
+      },
+      computed: {
+        
+        fullName: {
+          // vm.firstName 호출시 실행
+          get : function() {
+            return this.firstName + ' ' + this.lastName
+          },
+          // vm.firstName = 'test' 호출시 실행
+          set : function(newValue) {
+            var name = newValue.split(' ');
+            this.firstName = name[0];
+            this.lastName = name[name.length - 1];
+          }
+        }
+      }
+    })
+  </script>
+</html>

@@ -8,10 +8,63 @@
   </head>
   <body>
     <div id="app">
-      <div>{{foo}}</div>
-      <div>{{number + 1}}</div>
-      <div>{{(ok) ? 'Y' : 'N'}}</div>
-      <div>{{message.split('').reverse().join('') }}</div>
+      <div>
+        <h1>JS표현식</h1>
+        <div>{{foo}}</div>
+        <div>{{number + 1}}</div>
+        <div>{{(ok) ? 'Y' : 'N'}}</div>
+        <div>{{message.split('').reverse().join('') }}</div>
+        <!-- 조건문은 표현할수 없음 삼항연산자로 대체할것 -->
+        <h3>조건문은 표현할수 없음 삼항연산자로 대체할것</h3>
+        <div>{ if (ok) { return message}}</div> 
+        <h3>구문은 작동하지 않음. 구문과 표현식의 차이는??</h3>
+        <div>{var a = 1}</div>
+         <h3>Math, Date 같은 전역 객체에만 접근가능하고 사용자 정의 전역 객체는 접근 불가능하다</h3>
+        <div>{{Math.random()}}</div>
+      </div>
+      
+      <h3>
+        <h1>디렉티브</h1>
+        <h3>v-html="rawHtml" 디렉티브는 html자체를 바꾼다. 동적으로 html랜더링시 xss 취약점이 될 수 있다.</h3>
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        <h3>v-bind는 DOM의 속성으로 값을 전달한다 </h3>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <h3>
+          전달인자 ex)click 을 동적으로 전달할수 있다.(2.6.0+ 추가) <br>
+          템플릿이( new vue({el:'#app'}) 와 id="app" ) HTML에 직접 쓰여진 경우 브라우저가 모든 속성명을 소문자로 만든다.<br>
+          - attributeName -> attributename <br>
+          인스턴스(new Vue({...}))에서 data의 속성을 attributename 로 선언해야 전달할수 있다. attributeName 으로 선언시 에러발생!<br>
+          - Property or method "attributename" is not defined 
+        </h3>
+        <input v-bind:[attributeName]="text"> ... </input>
+        <h3>
+          '.' 디렉티브를 특별한 방법으로 바인딩해야되는것 나타낸다.<br>
+          .prevent는 event.preventDefault() 호출하도록 v-on 디렉티브에게 알려줌 ??
+        </h3>
+        <form v-on:submit.prevent="onSubmit"> ... </form>
+      
+
+      <div>
+        <h1>약어</h1>
+        <h3>v-bind</h3>
+        <!-- 전체 문법 -->
+        v-bind:value="text"  <input v-bind:value="text"/> 
+
+        <!-- 약어 -->
+        :value="text" <input :value="text"/>
+
+        <!-- shorthand with dynamic argument (2.6.0+) -->
+        :[key]="text" <input :[key]="text"/>
+         
+        <h3>v-on</h3>
+        <button v-on:click="doSomething">v-on:click</button>
+        <button @click="doSomething">@click</button>
+        <button @[event]="doSomething">@[event]</button>
+      </div>
+    </div>
+
+
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -22,7 +75,18 @@
         foo: "bar",
         number: 1,
         ok: true,
-        message: "메시지테스트"
+        message: "메시지테스트",
+        rawHtml: '<span style="color:red">이건 레드여야해</span>',
+        isButtonDisabled: true, /* null, "", undefined , false 동일하게 disabled 속성 사용안함으로 판단 */
+        attributename : "value", 
+        key : "value",
+        text : "inputValue",
+        event : "click"
+      },
+      methods : {
+        doSomething : function(){
+          alert();
+        }
       }
     });
   </script>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>watch 속성</h1>
+      <h3>
+        대부분 computed 속성이 적합하지만 사용자가 만든 리스너가 필요한 경우에
+        사용 <br />
+        변경에 대해 비동기식 or 시간이 많이 소요되는 조작을 하려고 할때 유용함
+      </h3>
+
+      <div id="watch-example">
+        <p>
+          yes/no 질문을 물어보세요:
+          <input v-model="question" />
+        </p>
+        <p>{{ answer }}</p>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <!-- 이미 Ajax 라이브러리의 풍부한 생태계와 범용 유틸리티 메소드 컬렉션이 있기 때문에, vue에서는 기존 것을 사용함 -->
+  <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+  <script>
+    var app = new Vue({
+      el: "#watch-example",
+      data: {
+        question: "",
+        answer: "질문을 하기전까지는 대답을 못해 ㅠㅠ"
+      },
+      watch: {
+        // app.data 값이 변경되면 실행
+        question: function(newQuestion) {
+          this.answer = "입력을 기다리는중";
+          this.getAnswer();
+        }
+      },
+      methods: {
+        // _.debounce는 lodash가 제공하는 기능으로
+        // 특히 시간이 많이 소요되는 작업을 실행할 수 있는 빈도를 제한합니다.
+        // 이 경우, 우리는 yesno.wtf/api 에 액세스 하는 빈도를 제한하고,
+        // 사용자가 ajax요청을 하기 전에 타이핑을 완전히 마칠 때까지 기다리길 바랍니다.
+        // _.debounce 함수(또는 이와 유사한 _.throttle)에 대한
+        // 자세한 내용을 보려면 https://lodash.com/docs#debounce 를 방문하세요.
+        getAnswer: _.debounce(
+          //아래 함수 실행
+          function() {
+            // 유효성 검사
+            if (this.question.indexOf("?") === -1) {
+              this.answer = "질문에는 물을표가 있어아해요!!";
+              return;
+            }
+            // ajax 데이터 호출전까지 표시
+            this.answer = "생각중..";
+
+            //현재 vue객체
+            var vm = this;
+
+            //ajax통신
+            axios
+              //url
+              .get("https://yesno.wtf/api")
+
+              // 성공시 실행
+              .then(function(res) {
+                vm.answer = _.capitalize(res.data.answer); //응답데이터를 대문자로 변경
+              })
+
+              // 에러발생시
+              .catch(function(error) {
+                vm.answer = "에러 api에 오류가 있어요!! " + error;
+              });
+          },
+          // 함수 실행후 사용자가 기다리는 시간이후 적용
+          500
+        )
+      }
+    });
+  </script>
+</html>
