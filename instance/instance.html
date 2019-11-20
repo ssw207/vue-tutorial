@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>{{ foo }}</p>
+      <!-- obj.foo는 더이상 변하지 않습니다! -->
+      <button v-on:click="foo = 'baz'">Change it</button>
+    </div>
+
+    <div id="app3">
+      <p>{{ a }}</p>
+      <!-- obj.foo는 더이상 변하지 않습니다! -->
+      <button v-on:click="a = 'baz'">Change it</button>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    window.onload = function() {
+      var data = { a: 1 };
+
+      var vm = new Vue({
+        data: data
+      });
+
+      //Vue 인스턴스에 전달한 data와, 선언한 data 객체는 동일한가?
+      console.log("vm.data === data.a", vm.a === data.a);
+
+      //Vue의 data 속성을 바꾸면 원본데이터보 바뀐다!!
+      vm.a = 3;
+      console.log("vm.a ", vm.a, "data.a", data.a);
+
+      //반대도 마찬가지!
+      data.a = 3;
+      console.log("vm.a ", vm.a, "data.a", data.a);
+
+      /* Object.freeze(obj) 사용시 변경되지 않게 할 수 잇다.
+      obj.foo = "test"; vm.foo = "test"; 접근시는 변경됨 */
+      var obj = {
+        foo: "bar"
+      };
+
+      // Object.freeze(obj);
+
+      var vm = new Vue({
+        el: "#app",
+        data: obj
+      });
+
+      //라이프 사이클 테스트
+
+      var vm2 = new Vue({
+        data: {
+          a: 1
+        },
+        created: function() {
+          // function () { this }  : this는 Vue 인스턴스, 콘솔로 확인
+          // debugger;
+          console.log("created Vue ", "a is " + this.a);
+        }
+        // created: () => {
+        //   // () => { this }  : this는 window객체
+        //   debugger;
+        //   // ()=> 사용시 부모의 컨테스트에 바인딩 되므로 에러발생!
+        //   console.log("a is " + this.a);
+        // }
+      });
+
+      // 아래도 마찬가지. function사용!
+      vm.$watch("foo", function(v) {
+        console.log("v ", v);
+      });
+
+      var vm3 = new Vue({
+        el: "#app3",
+        data: {
+          a: 1
+        },
+        beforeCreate: function() {
+          console.log("beforeCreate시작");
+        },
+        created: function() {
+          console.log("created");
+        },
+        beforeMount: function() {
+          console.log("beforeMount ", "el 속성이 있을때 실행");
+        },
+        mounted: function() {
+          console.log("mounted ", "vm3.$el");
+        },
+        beforeUpdate: function() {
+          console.log("beforeUpdate ", "data가 변경되면 실행");
+        },
+        beforeDestory: function() {
+          console.log("beforeDestory");
+        },
+        destoryed: function() {
+          console.log("destoryed");
+        }
+      });
+    };
+  </script>
+</html>
