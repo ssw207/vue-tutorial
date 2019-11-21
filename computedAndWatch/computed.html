@@ -127,12 +127,13 @@
       computed: {
         
         fullName: {
-          // vm.firstName 호출시 실행
+          // vm.fullName 호출시 실행
           get : function() {
             return this.firstName + ' ' + this.lastName
           },
-          // vm.firstName = 'test' 호출시 실행
+          // vm.fullName = 'test' 호출시 실행
           set : function(newValue) {
+            console.log('set실행');
             var name = newValue.split(' ');
             this.firstName = name[0];
             this.lastName = name[name.length - 1];
