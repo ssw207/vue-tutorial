@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>조건부 렌더링</h1>
+    <div id="app1">
+      <!-- ok 값이 true면 랜더링 -->
+      <h1 v-if="ok">yes</h1>
+      <!-- ok 값이 true가 아니면 랜더링 -->
+      <h1 v-else-if="type === 'a'">a</h1>
+      <h1 v-else>no</h1>
+
+      <!-- 템플릿은 보이지않는 래퍼 역활만하고 최종 랜더링 결과물에 template 엘리먼트가 제외된다 -->
+      <template v-if="ok">
+        <h1>title</h1>
+        <p>param</p>
+      </template>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app1",
+        data: {
+          ok: true,
+          type: "a"
+        }
+      });
+    </script>
+
+    <!-- 엘리먼트 재활용 -->
+    <!-- 두 템플릿 모두 같은 요소를 사용하므로 input은 바뀌지 않고 placeholder만 변경됨 -->
+    <section id="app2">
+      <template v-if="loginType ==='username'">
+        <label>사용자이름</label>
+        <input placeholder="이름" />
+      </template>
+      <template v-else>
+        <label>이메일</label>
+        <input placeholder="이메일" />
+      </template>
+      <button v-on:click="loginType = 'username'">로그인 유형 변경</button>
+    </section>
+
+    <script>
+      // app2
+      new Vue({
+        el: "#app2",
+        data: {
+          loginType: ""
+        }
+      });
+    </script>
+
+    <!-- key속성이 다르면 두 엘리먼트가 완전히 별개로 판단. label 엘리먼트는 key속성이 없으므로 재사용됨-->
+    <section id="app3">
+      <template v-if="loginType ==='username'">
+        <label>사용자이름</label>
+        <input placeholder="이름-초기화됨" key="username-input" />
+      </template>
+      <template v-else>
+        <label>이메일</label>
+        <input placeholder="이메일-초기화됨" key="email-input" />
+      </template>
+      <button v-on:click="change">로그인 유형 변경</button>
+    </section>
+
+    <script>
+      new Vue({
+        el: "#app3",
+        data: {
+          loginType: "username"
+        },
+        methods: {
+          change: function() {
+            return this.loginType === "username"
+              ? (this.loginType = "email")
+              : (this.loginType = "username");
+          }
+        }
+      });
+    </script>
+
+    <section id="app4">
+      <!-- 
+        v-show가 있으면 항상 랜더링 되고 true/false에 따라 display 속성을 토글한다 
+        v-else,template 구문을 지원하지 않음
+      -->
+      <h1>v-show</h1>
+      <h1 v-show="ok">안녕하세요!</h1>
+    </section>
+
+    <script>
+      new Vue({
+        el: "#app4",
+        data: {
+          ok: true
+        }
+      });
+    </script>
+    <h1>
+      v-if : 토글비용 높고 , v-show는 초기 랜더링 비용이 높으므로 자주 변경시
+      v-show, 런터임시 조건이 바뀌지 않으면 v-if 사용
+    </h1>
+
+    <h1>
+      v-if 보다 v-for는 우선순위가 높다.
+    </h1>
+  </body>
+</html>
