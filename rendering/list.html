@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>리스트 랜더링</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="./list.js"></script> -->
+  </head>
+  <body>
+    <!-- <div id="app1">
+      <myForm
+      v-for="item of list"
+      v-bind:title="item.title"
+      v-bind:key="item.id"
+      ></myForm> -->
+
+    <div id="app2">
+      <ul>
+        <!-- of도 사용 가능 -->
+        <li v-for="(item, idx) in items">
+          {{idx}} {{item.msg}}
+        </li>
+      </ul>
+    </div>
+    <script>
+      var vm2 = new Vue({
+        el: "#app2",
+        data: {
+          items: [
+            { id: 0, msg: "msg" },
+            { id: 1, msg: "msg1" },
+            { id: 2, msg: "msg2" }
+          ]
+        }
+      });
+    </script>
+
+    <!-- 객체 루핑 -->
+    <div id="app3">
+      <!-- 
+        결과값의 순서는 Object.keys() 나열 순서에 의해 결정 
+      -->
+      <ul v-for="(value, key, idx) in object">
+        <li>
+          {{key}} {{value}} {{idx}}
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app3",
+        data: {
+          object: {
+            key1: "value1",
+            key1: "value1",
+            key1: "value1",
+            key1: "value1"
+          }
+        }
+      });
+    </script>
+
+    <!-- 
+      배열 변경 : 원본배열을 변경한다.
+      push() : - 예: app4.items.push({ message: 'Baz' }) : 배열에 마지막 인덱스에 넣기 (LIFO)
+      pop() : - 예: app4.items.pop() : 배열에 객체 빼기 (LIFO)
+      unshift() : - 예: app4.items.unshift({ message: 'Baz' }) : 배열 첫 인덱스에 넣기
+      shift() : - 예: app4.items.shift() : 배열 첫 인덱스 빼기
+      splice() - 예: app4.items.splice(index, 1) : 해당 인덱스와 갯수를 정하여 빼기
+      sort() - 배열 정렬
+      reverse() - 배열 역순 정렬 
+
+      참조 : https://postitforhooney.tistory.com/entry/Vue-Vue-Basic-Course-%EC%8A%A4%ED%84%B0%EB%94%94%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EB%A9%B4%EC%84%9C-%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8-%EB%AC%B8%EB%B2%95%ED%8C%8C%ED%8A%B8-%EC%A0%95%EB%A6%AC-%EC%98%88%EC%A0%9C-%EB%B0%8F-%EA%B9%83%ED%97%88%EB%B8%8C-%EC%BD%94%EB%93%9C-%EA%B3%B5%EC%9C%A0
+    -->
+    <div id="app4">
+      <ul>
+      <li v-for="(item, idx) in items">
+          {{idx}} {{item.message}}
+      </ul>
+    </ul>
+    </div>
+
+    <script>
+      var app4 = new Vue({
+        el: "#app4",
+        data: {
+          items: [
+            { message: "1dd" },
+            { message: "4dd" },
+            { message: "3dd" },
+          ]
+        }
+      });
+
+      app4.items.push({ message: "test" });
+      app4.items.pop({ message: "test" });
+      app4.items.unshift({ message: "test" });
+      app4.items.shift({ message: "test" });
+      app4.items.sort();
+      app4.items.reverse();
+    </script>
+
+    <!-- 
+      배열대체 : 원본배열을 변경하지 않는다.
+      filter(), concat() 와 slice() 사용시 새 배열을 만들어 반환
+
+      아래경우는 변경을 감지 할수 없다.
+      인덱스로 배열에 있는 항목을 직접 설정하는 경우, 예: vm.items[indexOfItem] = newValue
+      배열 길이를 수정하는 경우, 예: vm.items.length = newLength
+    -->
+    <div id="app5">
+      <ul>
+      <li v-for="(item, idx) in items">
+          {{idx}} {{item.message}} 
+      </ul>
+    </ul>
+      {{a}}
+    </div>
+
+    <script>
+      var app5 = new Vue({
+        el: "#app5",
+        data: {
+          a:'a',
+          items: [
+            { message: "1dd" },
+            { message: "2dd" },
+            { message: "3dd" },
+          ]
+        }
+      });
+
+      // items의 message값이 '1dd'인 객체만 새로운 배열생성
+      app5.items = app5.items.filter( function(item) {
+        return item.message.match('1dd');
+      });
+
+      // 특정순서에 추가시
+      // Vue.set(app5.items, 2,  { message: "ㅇㅇㅇdd" });
+      // vm.items.splice(indexOfItem, 1, newValue);
+
+      // 배열길이 변경시
+      // app5.items.splice(1);
+
+      // vue는 속성 추가를 감지 할수 없음
+      //app5.b = 2
+    </script>
+
+    <div id="app6">
+    </div>
+      
+    <script>
+      var app6 = new Vue({
+        el: "#app5",
+        data: {
+          person : {
+            name :'donggu',
+            age:'11'
+          }      
+        }
+      });
+
+      // 이미 만들어진 인스턴스에 속성추가시
+      //단일
+      Vue.set(app6.person, 'like', 'book');
+      app6.$set(app6.person, 'test', 'test');
+      //다중
+      Object.assign(app6.person, {
+        '추가1' :'추가',
+        '추가2' :'추가'
+      })
+    </script>
+
+    <!-- 필터링된 속성표현 -->
+    <div id="app7">
+      <li v-for="n in evenNumbers">{{n}}</li>>
+      </li>
+    </div>
+    <script>
+      new Vue({
+        el : '#app7',
+        data : {
+          numbers : [1,2,3,4,5]
+        },
+        computed : {
+          evenNumbers : function() {
+            return this.numbers.filter(function(number) {
+              return number%2 === 0
+            })
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
