@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>이벤트 핸들링</title>
+  </head>
+  <body>
+    <div id="app1">
+      <button v-on:click="cnt += 1">더하기</button>
+      <p>이버튼이 클릭한 횟수는 {{cnt}} 번 입니다.</p>
+    </div>
+    <script>
+      new Vue({
+        el: "#app1",
+        data: {
+          cnt: 0
+        }
+      });
+    </script>
+
+    <div id="app2">
+      <button v-on:click="greet">Greet</button>
+    </div>
+    <script>
+      var app2 = new Vue({
+        el: "#app2",
+        data: {
+          name: "test"
+        },
+        methods: {
+          greet: function(evt) {
+            alert("hello " + this.name);
+
+            if (evt) {
+              alert(evt.target.tagName);
+            }
+          }
+        }
+      });
+
+      //js로 메소드 호출
+      // app2.greet();
+    </script>
+
+    <!-- 인라인 매소드 핸들러 -->
+    <div id="app3">
+      <button v-on:click="say('안녕')">버튼</button>
+      <!-- 이벤트 객체를 전달가능 -->
+      <button v-on:click="warn('경고메시지', $event)">버튼2</button>
+    </div>
+    <script>
+      new Vue({
+        el: "#app3",
+        methods: {
+          say: function(msg) {
+            alert(msg);
+          },
+          warn: function(msg, evt) {
+            // 이벤트 객체에 접근
+            if (evt) evt.preventDefault();
+            alert(msg);
+          }
+        }
+      });
+    </script>
+
+    <!-- 
+      이벤트 수식어 
+    .stop
+    .prevent
+    .capture
+    .self
+    .once
+    .passive
+    -->
+    <div id="app4">
+      <!-- 클릭 이벤트 전파가 중단됩니다 -->
+      <a v-on:click.stop="doThis"></a>
+
+      <!-- 제출 이벤트가 페이지를 다시 로드 하지 않습니다 -->
+      <form v-on:submit.prevent="onSubmit"></form>
+
+      <!-- 수식어는 체이닝 가능합니다 -->
+      <a v-on:click.stop.prevent="doThat"></a>
+
+      <!-- 단순히 수식어만 사용할 수 있습니다 -->
+      <form v-on:submit.prevent></form>
+
+      <!-- 이벤트 리스너를 추가할 때 캡처모드를 사용합니다 -->
+      <!-- 즉, 내부 엘리먼트를 대상으로 하는 이벤트가 해당 엘리먼트에서 처리되기 전에 여기서 처리합니다. -->
+      <div v-on:click.capture="doThis">...</div>
+
+      <!-- event.target이 엘리먼트 자체인 경우에만 트리거를 처리합니다 -->
+      <!-- 자식 엘리먼트에서는 안됩니다 -->
+      <div v-on:click.self="doThat">...</div>
+
+      <!-- 2.1.4+ 클릭 이벤트는 최대 한번만 트리거 됩니다. -->
+      <a v-on:click.once="doThis"></a>
+
+      <!-- 2.3.0+ 스크롤의 기본 이벤트를 취소할 수 없습니다. -->
+      <div v-on:scroll.passive="onScroll">...</div>
+    </div>
+    <script>
+      new Vue({
+        el: "#app4",
+        methods: {
+          doThat: function() {
+            alert("doThat");
+          },
+          doThis: function() {
+            alert("doThis");
+          }
+        }
+      });
+    </script>
+    <!-- 키 수식어 -->
+    <div id="app5">
+      <!-- 엔터 입력시 submit 매서드 실행 -->
+      <input v-on:keyup.enter="submit" />
+
+      <!-- 
+        시스템 수식어 키 : 아래 키가 눌린 경우에만 마우스, 키도브 이벤트 리스너를 트리거 가능
+        .ctrl
+        .alt
+        .shift
+        .meta
+        .exact : 2.5.0+
+      -->
+      <!-- Alt + C -->
+      <input @keyup.alt.67="clear" />
+
+      <!-- Ctrl + Click -->
+      <div @click.ctrl="doSomething">Do something</div>
+
+      <!-- Alt 또는 Shift와 함께 눌린 경우에도 실행됩니다. -->
+      <button @click.ctrl="onClick">A</button>
+
+      <!-- Ctrl 키만 눌려있을 때만 실행됩니다. -->
+      <button @click.ctrl.exact="onCtrlClick">A</button>
+
+      <!-- 아래 코드는 시스템 키가 눌리지 않은 상태인 경우에만 작동합니다. -->
+      <button @click.exact="onClick">A</button>
+
+      <!-- 
+        마우스 수식어 
+        .left
+        .right
+        .middle
+      -->
+      <button @click.left="onClick('1')">L</button>
+      <button @click.right="onClick('2')">R</button>
+      <button @click.middle="onClick('3')">M</button>
+    </div>
+    <script>
+      new Vue({
+        el: "#app5",
+        methods: {
+          clear: function() {
+            alert("clear");
+          },
+          doSomething: function() {
+            alert("doSomething");
+          },
+          onCtrlClick: function() {
+            alert("onCtrlClick");
+          },
+          onClick: function(msg) {
+            alert("onClick " + msg);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
