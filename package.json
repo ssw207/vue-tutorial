@@ -1,0 +1,18 @@
+{
+  "name": "VueTutorial",
+  "version": "1.0.0",
+  "description": "```\r <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->\r <script src=\"https://cdn.jsdelivr.net/npm/vue/dist/vue.js\"></script>\r <!-- 상용버전, 속도와 용량이 최적화됨. -->\r <script src=\"https://cdn.jsdelivr.net/npm/vue\"></script>\r ```",
+  "main": "index.js",
+  "dependencies": {
+    "bower": "^1.8.8",
+    "install": "^0.13.0",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
