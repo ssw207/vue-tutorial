@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>props</title>
+    <script>
+      window.onload = function() {
+        Vue.component("child", {
+          props: ["size", "init"],
+          data: function() {
+            return { counter: this.init };
+          },
+          computed: {
+            nomalizedSize: function() {
+              return this.size.trim().toLowerCase();
+            }
+          },
+          template: "<span>{{nomalizedSize}} {{counter}}</span>"
+        });
+
+        Vue.component("example", {
+          //인스턴스 생성전에 검증
+          props: {
+            // 기본 타입 확인 (`null` 은 어떤 타입이든 가능하다는 뜻입니다)
+            propA: Number
+            // 여러개의 가능한 타입
+            // propB: [String, Number],
+            // // 문자열이며 꼭 필요합니다
+            // propC: {
+            //   type: String,
+            //   required: true
+            // },
+            // // 숫자이며 기본 값을 가집니다
+            // propD: {
+            //   type: Number,
+            //   default: 100
+            // },
+            // // 객체/배열의 기본값은 팩토리 함수에서 반환 되어야 합니다.
+            // propE: {
+            //   type: Object,
+            //   default: function() {
+            //     return { message: "hello" };
+            //   }
+            // },
+            // // 사용자 정의 유효성 검사 가능
+            // propF: {
+            //   validator: function(value) {
+            //     return value > 10;
+            //   }
+            // }
+          },
+          template: "<span>{{propA}}</span>"
+        });
+
+        new Vue({
+          el: "#app"
+        });
+
+        Vue.component("button-counter", {
+          template: '<button v-on:click="inc">{{counter}}</button>',
+          data: function() {
+            return { counter: 0 };
+          },
+          methods: {
+            inc: function() {
+              this.counter += 1;
+              this.$emit("inc"); // 부모가 v-on:inv 로 이벤트를 감지 있도록 정의
+            }
+          }
+        });
+
+        new Vue({
+          el: "#counter-event-example",
+          data: {
+            total: 0
+          },
+          methods: {
+            incTotal: function() {
+              this.total += 1;
+            }
+          }
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <child v-bind:size="'6AA'">test</child>
+      <!-- '100'전달시 컴파일에러 -->
+      <example :prop-a="100">exam</example>
+      <child data-3d-date-picker="true" v-bind:size="'6AA'"
+        >템플릿에 html속성을 추가</child
+      >
+    </div>
+
+    <div id="counter-event-example">
+      <p>{{ total }}</p>
+      <!-- 자식 컴포넌트에서 inc 이벤트가 발생하면 incTotal 함수를 실행한다 -->
+      <button-counter v-on:inc="incTotal"></button-counter>
+      <button-counter v-on:inc="incTotal"></button-counter>
+      <!-- 자식 이벤트가 이닌 브라우저의 이벤트를 감지 -->
+      <button-counter v-on:click.native="incTotal"></button-counter>
+    </div>
+  </body>
+</html>
