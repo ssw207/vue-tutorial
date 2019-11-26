@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>컴포넌트</title>
+    <script>
+      window.onload = function() {
+        // 컴포넌트는 모두 소문자이여야하며 하이픈을 포함해야함
+        Vue.component("my-component", {
+          template: "<div>사용자 정의 컴포넌트</div>"
+        });
+
+        Vue.component("my-component2", {
+          template: "<div>사용자 정의 컴포넌트2</div>"
+        });
+
+        var Child = {
+          template: "<div>child컴포넌트</div>"
+        };
+
+        Vue.component("my-row", {
+          template: "<tr>tr</tr>"
+        });
+
+        // 인스턴스 생성전에 component가 등록되어야 한다.
+        new Vue({
+          el: "#example-1",
+          components: {
+            // 인스턴스/컴포넌트 범위에서만 사용가능, 템플릿을 변경한다
+            "my-component2": Child
+          }
+        });
+
+        var data = { counter: 0 };
+
+        Vue.component("simple-counter", {
+          template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+          // 데이터는 기술적으로 함수이므로 Vue는 따지지 않지만
+          // 각 컴포넌트 인스턴스에 대해 같은 객체 참조를 반환합니다.
+          data: function() {
+            return {
+              counter: 0
+            };
+          }
+        });
+
+        new Vue({
+          el: "#example-2"
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div id="example-1">
+      <my-component></my-component>
+      <my-component2></my-component2>
+      <table>
+        <!-- ul ol table select와 같은 엘리먼트는 내부의 엘리먼트에 제한을 가진다. -->
+        <tr is="my-row"></tr>
+      </table>
+    </div>
+
+    <div id="example-2">
+      <simple-counter></simple-counter>
+      <simple-counter></simple-counter>
+      <simple-counter></simple-counter>
+    </div>
+  </body>
+</html>
