@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>통화필터</title>
+    <script>
+      window.onload = function() {
+        Vue.component("currency-input", {
+          template: "<input type='text'/>",
+          props: ["price", "label"],
+          data: function() {}
+        });
+        new Vue({
+          el: "#app1",
+          data: {
+            sum: 0
+          }
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div id="app1">
+      <currency-input label="Price" v-model="price"></currency-input>
+      <div>합계 : {{sum}}</div>
+    </div>
+  </body>
+</html>
