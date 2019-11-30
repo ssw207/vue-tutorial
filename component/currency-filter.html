@@ -42,18 +42,31 @@
               var value = evt.target.value;
               // currency-validator.js의 함수. 통화형식이 아니면 waring으로 경고문고, 통화형태의 형식으로 값을 변경한뒤 value에 세팅
               var result = currencyValidator.parse(value, this.value); //this.value 는 props의 value
+
               // 경고문구가 있으면 ('', null, undefinded, 0일경우 false)
               if (result.warning) {
                 console.log("this.$refs.input.value", this.$refs.input.value); //현재 입력값
                 console.log("result.value", result.value); //포멧팅된 값
                 this.$refs.input.value = result.value;
               }
+
+              // 부모가 input이벤트 감지시 자식 컴포넌트의 통화형식으로 포멧팅된 값으로 변경
+              // v-model 은 input이벤트를 감지
+              this.$emit("input", result.value);
             },
-            selectAll: function() {},
-            formatValue: function() {}
+            selectAll: function(evt) {
+              setTimeout(function() {
+                // input, textarea 엘리먼트에만 추가되는 이벤트, 대상의 텍스트를 모두 선택한다. 크롬 사파리 브라우저에 버그가 있어서 지연실행해야함
+                evt.target.select(); //
+              }, 0);
+            },
+            formatValue: function() {
+              //vue인스턴스에 등록된 참조(DOM의 id와 유사)
+              this.$refs.input.value = currencyValidator.format(this.value); // 소수점 2자리까지만 표시
+            }
           }
         });
-        new Vue({
+        var vm = new Vue({
           el: "#app1",
           data: {
             price: 0,
@@ -62,9 +75,15 @@
             discount: 0
           },
           computed: {
-            sum: function() {
-              console.log("작동");
-              // return this.price + this.shipping + this.handling - this.discount;
+            total: function() {
+              // 소수점 2자리까지 표시
+              return (
+                (this.price * 100 +
+                  this.shipping * 100 +
+                  this.handling * 100 -
+                  this.discount * 100) /
+                100
+              ).toFixed(2);
             }
           }
         });
@@ -74,11 +93,11 @@
   <body>
     <div id="app1">
       <!-- 숫자, 소숫점2자리까지만 입력가능, currency-input에 입력된값음 합계에 자동계산됨 -->
-      <currency-input label="'Price'"></currency-input>
-      <!-- <currency-input label="Shipping" v-model="shipping"></currency-input>
+      <currency-input label="Price" v-model="price"></currency-input>
+      <currency-input label="Shipping" v-model="shipping"></currency-input>
       <currency-input label="Handling" v-model="handling"></currency-input>
-      <currency-input label="Discount" v-model="discount"></currency-input> -->
-      <div>합계 : {{sum}}</div>
+      <currency-input label="Discount" v-model="discount"></currency-input>
+      <div>합계 : {{total}}</div>
     </div>
   </body>
 </html>
