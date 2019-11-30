@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      window.onload = function() {
+        Vue.component("base-input", {
+          template: '<input ref="input" type="text"/>'
+        });
+
+        var vm = new Vue({
+          el: "#app",
+          methods: {
+            focus: function() {
+              //부모 -> 자식컴포넌트 -> input
+              this.$refs.usernameInput.$refs.input.focus();
+            }
+          }
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <!-- ref 의 이름으로 자식컴포넌트에 직접 접근할수 있게한다? -->
+    <div id="app">
+      <button v-on:click="focus">버튼</button>
+      <base-input ref="usernameInput"></base-input>
+    </div>
+  </body>
+</html>

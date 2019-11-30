@@ -3,18 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.rawgit.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e/raw/974aa47f8f9c5361c5233bd56be37db8ed765a09/currency-validator.js"></script>
     <title>통화필터</title>
     <script>
       window.onload = function() {
         Vue.component("currency-input", {
-          template: "<input type='text'/>",
-          props: ["price", "label"],
-          data: function() {}
+          template:
+            '\
+                <div>\
+                  <label v-if="label">{{ label }}</label>\
+                  $\
+                  <input\
+                    ref="input"\
+                    v-bind:value="value"\
+                    v-on:input="updateValue($event)"\
+                    v-on:focus="selectAll"\
+                    v-on:blur="formatValue"\
+                  >\
+                </div>\
+              ',
+          props: {
+            value: {
+              type: Number,
+              default: 0
+            },
+            label: {
+              type: String,
+              default: ""
+            }
+          },
+          mounted: function() {
+            console.log("마운트");
+            this.formatValue();
+          },
+          methods: {
+            updateValue: function(evt) {
+              // $event로 dom에서 이벤트 객체 접근가능
+              var value = evt.target.value;
+              // currency-validator.js의 함수. 통화형식이 아니면 waring으로 경고문고, 통화형태의 형식으로 값을 변경한뒤 value에 세팅
+              var result = currencyValidator.parse(value, this.value); //this.value 는 props의 value
+              // 경고문구가 있으면 ('', null, undefinded, 0일경우 false)
+              if (result.warning) {
+                console.log("this.$refs.input.value", this.$refs.input.value); //현재 입력값
+                console.log("result.value", result.value); //포멧팅된 값
+                this.$refs.input.value = result.value;
+              }
+            },
+            selectAll: function() {},
+            formatValue: function() {}
+          }
         });
         new Vue({
           el: "#app1",
           data: {
-            sum: 0
+            price: 0,
+            shipping: 0,
+            handling: 0,
+            discount: 0
+          },
+          computed: {
+            sum: function() {
+              console.log("작동");
+              // return this.price + this.shipping + this.handling - this.discount;
+            }
           }
         });
       };
@@ -22,7 +73,11 @@
   </head>
   <body>
     <div id="app1">
-      <currency-input label="Price" v-model="price"></currency-input>
+      <!-- 숫자, 소숫점2자리까지만 입력가능, currency-input에 입력된값음 합계에 자동계산됨 -->
+      <currency-input label="'Price'"></currency-input>
+      <!-- <currency-input label="Shipping" v-model="shipping"></currency-input>
+      <currency-input label="Handling" v-model="handling"></currency-input>
+      <currency-input label="Discount" v-model="discount"></currency-input> -->
       <div>합계 : {{sum}}</div>
     </div>
   </body>
