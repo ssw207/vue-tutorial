@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>store 패턴</title>
+    <script>
+      /*
+        soreceOfTruth 데이터가 변경될때마다 vm1 vm2 컴포넌트 초기화
+        this.$root.$data로 하위컴포넌트에서 상위컴포넌트를 접근할수 있지만. 이럴경우 흔적이 남지 않아 디버그가 어렵다.
+
+        var soreceOfTruth = {};
+
+        var vm1 = new Vue({
+          data: soreceOfTruth
+        });
+
+        var vm2 = new Vue({
+          data: soreceOfTruth
+        });
+      */
+
+      //getter setter로 root data접근시 디버깅이 가능
+      var store = {
+        debug: true,
+        state: {
+          msg: "hello"
+        },
+        setMsgAction(newValue) {
+          if (this.debug) console.log("메세지 입력 시작 ", newValue);
+          this.state.msg = newValue;
+        },
+        clearMsgAction() {
+          if (this.debug) console.log("초기화 시작 ");
+          this.state.msg = "";
+        }
+      };
+
+      // 공유하는 data, private data분리
+      var vm1 = new Vue({
+        data: {
+          privateState: {},
+          sharedState: store.state
+        }
+      });
+
+      var vm2 = new Vue({
+        data: {
+          privateState: {},
+          sharedState: store.state
+        }
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

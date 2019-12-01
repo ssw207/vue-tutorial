@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>비 부모-자식간 통신</title>
+    <script>
+      Vue.component("a", {
+        template: "<span>a</span>",
+        methods: {
+          idSelected: function({ target }) {
+            console.log("a idSelected 트리거 ", target.value);
+          }
+        }
+      });
+      Vue.component("b", {
+        template: "<span>b</span>",
+        methods: {
+          idSelected: function(target) {
+            console.log("b idSelected 트리거 ", target.value);
+          }
+        },
+        created: function() {
+          console.log("b 크리에이티드 훅");
+        }
+      });
+
+      var bus = new Vue();
+
+      // 컴포넌트 A의 메소드
+      bus.$emit("id-selected", 1);
+
+      // 컴포넌트 B의 created 훅
+      bus.$on("id-selected", function(id) {
+        // ...
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

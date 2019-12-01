@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>컴포넌트 v-model</title>
+    <script>
+      window.onload = function() {
+        Vue.component("my-checkbox", {
+          template:
+            "<div><input type='checkbox'/><span>{{checked}} {{value}}</span></div>",
+          model: {
+            prop: "checked",
+            event: "change"
+          },
+          props: {
+            checked: Boolean,
+            value: String
+          }
+        });
+
+        new Vue({
+          el: "#app1",
+          data: { foo: true }
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <!-- v-model은 기본적으로 input이벤트, value attribute에 바인딩된다. -->
+    <div id="app1">
+      <my-checkbox v-model="foo" value="test"></my-checkbox>
+      <!-- <my-checkbox
+        :checked="foo"
+        @change="val => { foo = val }"
+        value="some value"
+      >
+      </my-checkbox> -->
+      {{foo}}
+    </div>
+  </body>
+</html>
