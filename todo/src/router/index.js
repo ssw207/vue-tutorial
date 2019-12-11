@@ -6,8 +6,8 @@ Vue.use(VueRouter) // vue에게 VueRouter 를 사용하라고 알려줌
 
 const routes = [
   {
-    path: '/TodoFrame',
-    name: 'TodoFrame',
+    path: '/todo',
+    name: 'todo',
     component: TodoFrame
   },
   {

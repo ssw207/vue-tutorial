@@ -1,7 +1,6 @@
 {
   "name": "todo",
   "version": "0.1.0",
-  "proxy": "http://127.0.0.1:8088",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,9 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.3",
+    "element-ui": "^2.4.5",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3"
   },
@@ -24,8 +22,10 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3",
     "vue-cli-plugin-axios": "0.0.4",
-    "vue-cli-plugin-bootstrap-vue": "^0.5.0",
+    "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -45,5 +45,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "proxy": "http://127.0.0.1:8088"
 }
