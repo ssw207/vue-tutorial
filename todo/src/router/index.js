@@ -6,12 +6,12 @@ Vue.use(VueRouter) // vue에게 VueRouter 를 사용하라고 알려줌
 
 const routes = [
   {
-    path: '/todo',
+    path: '/',
     name: 'todo',
     component: TodoFrame
   },
   {
-    path: '/Home',
+    path: '/home',
     name: 'Home',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

@@ -1,33 +1,11 @@
 <template>
-  <div>
+  <el-form>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>오늘 해야 할 일</span>
       </div>
-      <el-table :data="todoItems" style="width: 100%">
-        <el-table-column prop="title" label="Title" width="180">
-        </el-table-column>
-        <el-table-column prop="done" label="Done"> </el-table-column>
-      </el-table>
-    </el-card>
-
-    <!-- <b-card
-      header="오늘 해야 할 일"
-      style="max-width: 40rem; margin: auto; margin-top: 10vh;"
-      class="mb-2"
-      border-variant="info"
-      align="left"
-    >
-      <b-form-group id="to-do-input">
-        <b-container fluid>
-          <BaseInput
-            placeholder="새 할 일을 적으세요."
-            @add="addTodo"
-          ></BaseInput>
-        </b-container>
-      </b-form-group>
-
-      <b-list-group v-if="todoItems.length">
+      <BaseInput placeholder="새 할 일을 적으세요." @add="addTodo"></BaseInput>
+      <el-row v-if="todoItems.length">
         <TodoItem
           v-for="todo of todoItems"
           :key="todo.id"
@@ -35,21 +13,21 @@
           @delete="deleteTodo"
           @check="checkTodo"
         ></TodoItem>
-      </b-list-group>
-    </b-card> -->
-  </div>
+      </el-row>
+    </el-card>
+  </el-form>
 </template>
 
 <script>
-// import TodoItem from "./TodoItem.vue";
-// import BaseInput from "./BaseInput.vue";
+import TodoItem from "./TodoItem.vue";
+import BaseInput from "./BaseInput.vue";
 import axios from "axios"; // 아까 받은 axios 패키지를 사용하기 위해 import한다
 
 let baseUrl = "http://127.0.0.1:8081/api/todo";
 export default {
   components: {
-    // TodoItem,
-    // BaseInput
+    TodoItem,
+    BaseInput
   },
   mounted() {
     // 초기화 함수를 정의 한다.

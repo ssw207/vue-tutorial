@@ -1,10 +1,14 @@
 <template>
-  <b-list-group-item class="d-flex justify-content-between align-items-center">
-    <b-form-checkbox type="checkbox" v-model="todo.done" @change="$emit('check', todo)">
-      <span>{{ todo.title }}</span>
-    </b-form-checkbox>
-    <b-button size="sm" variant="outline-primary" @click="$emit('delete', todo.id)">삭제</b-button>
-  </b-list-group-item>
+  <p>
+    <el-col>
+      <el-checkbox type="checkbox" v-model="todo.done" @change="$emit('check', todo)">
+        <span>{{ todo.title }}</span>
+      </el-checkbox>
+    </el-col>
+    <el-col>
+      <el-button size="sm" variant="outline-primary" @click="$emit('delete', todo.id)">삭제</el-button>
+    </el-col>
+  </p>
 </template>
 
 <script>
