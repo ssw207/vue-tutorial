@@ -6,23 +6,15 @@ Vue.use(VueRouter) // vue에게 VueRouter 를 사용하라고 알려줌
 
 const routes = [
   {
-    path: '/TodoFrame',
-    name: 'TodoFrame',
+    path: '/todo',
+    name: 'todo',
     component: TodoFrame
   },
   {
-    path: '/',
-    name: 'Home',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/Home.vue')
+    path: '/user/login',
+    name: 'login',
+    component: () => import('../component/user/Login.vue')
   },
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/user/Login.vue')
-  // },
   {
     path: '/user/users',
     name: 'users',

@@ -23,6 +23,7 @@
             <b-dropdown-item href="#">회원정보</b-dropdown-item>
             <b-dropdown-item href="#">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item v-if="!isLogin" @click="go('/user/login')">로그인</b-nav-item>
           <b-nav-item v-if="!isLogin" @click="go('/user/userCreate')">회원가입</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -34,7 +35,7 @@
 export default {
   data() {
     return {
-      isLogin: true,
+      isLogin: false,
       isAdmin: true
     };
   },

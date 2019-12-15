@@ -11,7 +11,7 @@
         </b-form-group>
 
         <b-form-group label="Name:" label-for="nested-name">
-          <b-form-input id="nested-name" v-model="nmUser"></b-form-input>
+          <b-form-input id="nested-name" v-model="userName"></b-form-input>
         </b-form-group>
       </b-form-group>
       <div>
@@ -38,12 +38,20 @@ export default {
   methods: {
     userCrate() {
       let data = {
-        id: this.id,
-        password: this.password,
+        memId: this.id,
+        memPw: this.password,
         userName: this.userName
       };
 
-      axios.post("/", data);
+      axios
+        .post("http://localhost:8081/api/member/save", data)
+        .then(function() {
+          alert("회원가입 성공");
+          this.$router.push("/");
+        })
+        .catch(function(error) {
+          alert(error);
+        });
     }
   }
 };

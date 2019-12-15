@@ -15,11 +15,17 @@
       <b-form-group label-for="input-password">
         <b-form-input id="input-password" placeholder="PASSWORD" v-model="password" trim></b-form-input>
       </b-form-group>
+      <div>
+        <div class="btn-box">
+          <b-button variant="success" @click="login">로그인</b-button>
+        </div>
+      </div>
     </b-card>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   computed: {
     stateId() {
@@ -47,6 +53,23 @@ export default {
       id: "",
       password: ""
     };
+  },
+  methods: {
+    login() {
+      let data = { memId: this.id, memPw: this.password };
+      axios
+        .post("http://localhost:8081/api/member/login", data)
+        .then(() => {
+          this.$router.push({
+            path: "/todo",
+            params: { id: this.id, isLogin: true },
+            props: true
+          });
+        })
+        .catch(function(error) {
+          alert(error);
+        });
+    }
   }
 };
 </script>
