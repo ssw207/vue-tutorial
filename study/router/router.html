@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Hello App!</h1>
+    <p>
+      <!-- 구체적인 속성은 `to` prop을 이용합니다. -->
+      <!-- 기본적으로 `<router-link>`는 `<a>` 태그로 렌더링됩니다.-->
+      <router-link to="/foo/admin">Go to Foo</router-link>
+      <router-link to="/bar">Go to Bar</router-link>
+      <button v-on:click="goFoo">go foo</button>
+    </p>
+    <!-- 라우트 아울렛 -->
+    <!-- 현재 라우트에 맞는 컴포넌트가 렌더링됩니다. -->
+    <router-view></router-view>
+  </div>
+</body>
+<script>
+
+  // 1.컴포넌트 정의
+  const Foo = { template: '<div>foo {{$route.params.id}}</div>' }
+  const Bar = { template: '<div>bar</div>' }
+
+  // 2. 라우트를 정의
+  //
+  const routes = [
+    { path: '/foo/:id', name: 'fooName', component: Foo },
+    { path: '/bar', component: Bar }
+  ]
+
+  // 3. `routes` 옵션과 함께 router 인스턴스를 만드세요.
+  // 추가 옵션을 여기서 전달해야합니다.
+  // 지금은 간단하게 유지하겠습니다.
+  const router = new VueRouter({
+    routes // `routes: routes`의 줄임
+  })
+
+  // 4. 루트 인스턴스를 만들고 mount 하세요.
+  // router와 router 옵션을 전체 앱에 주입합니다.
+  const app = new Vue({
+    router,
+    created: function () {
+      // 클릭해도 훅은 다시 실행되지 않는다.
+      console.log("생성");
+    },
+    mounted: function () {
+      console.log("마운트");
+    },
+    methods: {
+      goFoo: function () {
+
+        router.push({ name: 'fooName', params: { id: 'routerPush' } });
+      }
+    }
+  }).$mount('#app');
+// 이제 앱이 시작됩니다!
+</script>
+
+</html>
