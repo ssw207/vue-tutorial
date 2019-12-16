@@ -21,9 +21,19 @@ const routes = [
     component: () => import('../component/user/Users.vue')
   },
   {
-    path: '/user/userCreate',
+    path: '/user/create',
     name: 'userCreate',
     component: () => import('../component/user/UserCreate.vue')
+  },
+  {
+    path: '/user/modify',
+    name: 'userModify',
+    component: () => import('../component/user/UserModify.vue')
+  },
+  {
+    path: '/user/:id',
+    name: 'userDetail',
+    component: () => import('../component/user/UserDetail.vue')
   },
 ]
 

@@ -45,9 +45,9 @@ export default {
 
       axios
         .post("http://localhost:8081/api/member/save", data)
-        .then(function() {
+        .then(() => {
           alert("회원가입 성공");
-          this.$router.push("/");
+          this.$router.push("/user/login");
         })
         .catch(function(error) {
           alert(error);

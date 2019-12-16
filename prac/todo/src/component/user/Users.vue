@@ -1,13 +1,13 @@
 <template>
   <div>
     <ul v-if="users.length">
-      <li v-for="user of users" :key="user.id">{{user.id}} {{user.name}}</li>
+      <li v-for="user of users" :key="user.id">{{user.memId}} {{user.nmName}}</li>
     </ul>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   data: function() {
@@ -16,10 +16,9 @@ export default {
     };
   },
   created: function() {
-    // 유저리스트
-    // axios.get("../../data/users.json").then(res => {
-    //   this.users = res.data;
-    // });
+    axios.get("http://localhost:8081/api/member/list").then(res => {
+      this.users = res.data;
+    });
   }
 };
 </script>

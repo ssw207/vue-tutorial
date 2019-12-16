@@ -26,6 +26,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   computed: {
     stateId() {
@@ -60,6 +61,8 @@ export default {
       axios
         .post("http://localhost:8081/api/member/login", data)
         .then(() => {
+          //로컬 스토리지에 토큰을 넣는다.
+
           this.$router.push({
             path: "/todo",
             params: { id: this.id, isLogin: true },

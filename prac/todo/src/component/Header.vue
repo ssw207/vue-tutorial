@@ -15,16 +15,16 @@
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown v-if="isLogin" right>
+          <b-nav-item-dropdown v-if="true" right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
               <em>사용자</em>
             </template>
-            <b-dropdown-item href="#">회원정보</b-dropdown-item>
+            <b-dropdown-item @click="$router.push('/user/')">회원정보</b-dropdown-item>
             <b-dropdown-item href="#">로그아웃</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="!isLogin" @click="go('/user/login')">로그인</b-nav-item>
-          <b-nav-item v-if="!isLogin" @click="go('/user/userCreate')">회원가입</b-nav-item>
+          <b-nav-item v-if="!isLogin" @click="go('/user/create')">회원가입</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
