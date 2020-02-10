@@ -2,8 +2,8 @@ package come.home.domain.user.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
+import come.home.domain.user.dto.UserResDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +16,24 @@ import lombok.ToString;
 @ToString
 public class User {
 	@Id
-	protected String userId;
-	protected String userName;
-	protected String userPassword;
+	private String userId;
+	private String userName;
+	private String userPassword;
 	
 	@Builder
-	protected User(String userId, String userName, String userPassword) {
+	public User(String userId, String userName, String userPassword) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.userPassword = userPassword;
+	}
+	
+	public UserResDto toDto() {
+		return UserResDto
+				.builder()
+					.userId(this.userId)
+					.userName(this.userName)
+					.userPassword(this.userPassword)
+					.build();
 	}
 }
