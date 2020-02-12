@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	@Override
-	public UserResDto singUpUser(UserReqDto userReqDto) {
+	public UserResDto saveUser(UserReqDto userReqDto) {
 		if(userReqDto == null) return null;
 		
 		User user = userRepository.save(userReqDto.toEntity());

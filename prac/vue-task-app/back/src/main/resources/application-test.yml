@@ -9,6 +9,7 @@ spring:
   h2:
     console:
       enabled: true  # H2 웹 콘솔을 사용하겠다는 의미
+      path: /h2-console
 
   datasource:
     driver-class-name: org.h2.Driver  #h2 드라이버 설정

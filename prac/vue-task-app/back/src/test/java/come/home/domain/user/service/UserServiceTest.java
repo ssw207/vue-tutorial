@@ -24,14 +24,14 @@ public class UserServiceTest {
 	
 	@Test
 	public void 회원가입() {
-		UserResDto userResDto = userService.singUpUser(userReqDto);
+		UserResDto userResDto = userService.saveUser(userReqDto);
 		assertThat(userResDto.getUserId()).isEqualTo("id");
 	}
 	
 	@Test
 	public void 로그인() throws Exception {
 		//given
-		UserResDto userResDto = userService.singUpUser(userReqDto);
+		UserResDto userResDto = userService.saveUser(userReqDto);
 		
 		UserResDto dto = userService.login(userReqDto);
 		assertThat(dto != null).isTrue();

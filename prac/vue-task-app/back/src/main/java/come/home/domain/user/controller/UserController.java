@@ -14,9 +14,9 @@ import lombok.AllArgsConstructor;
 public class UserController {
 	private UserService s;
 	
-	@PostMapping("/user/signup")
-	public UserResDto singUp(@RequestBody UserReqDto userReqDto) {
-		return s.singUpUser(userReqDto);
+	@PostMapping("/user/save")
+	public UserResDto save(@RequestBody UserReqDto userReqDto) {
+		return s.saveUser(userReqDto);
 	}
 	
 	@PostMapping("/user/login")
