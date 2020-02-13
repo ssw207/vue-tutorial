@@ -14,10 +14,13 @@ import come.home.domain.task.domain.Task;
 import come.home.domain.task.dto.TaskReqDto;
 import come.home.domain.task.exception.TaskServiceException;
 import come.home.domain.task.service.TaskService;
+import lombok.AllArgsConstructor;
 
 @RestController
+@AllArgsConstructor
 public class TaskController {
 	private TaskService s;
+	
 	//할일목록 조회
 	@GetMapping("/task")
 	public List<Task> listTask() {

@@ -9,4 +9,9 @@ public class StringUtil {
 	public static boolean isNotEmpty(String str) {
 		return (str == null || "".equals(str)) ? false : true;
 	}
+	
+	public static String nullToString(String str) {
+		if (str == null) return "";
+		return str;
+	}
 }
