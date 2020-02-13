@@ -26,17 +26,21 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public Optional<Task> getTask(Task task) {
-		return r.findById(task.getSeq());
+	public Optional<Task> getTask(Long seq) {
+		return r.findById(seq);
+	}
+
+	@Override
+	public void deleteTask(Task task) {
+		r.delete(task);
 	}
 
 	@Override
 	public Task modifyTask(Task task) {
-		Task resTask = r.findById(task.getSeq())
-							.orElseThrow(()-> new TaskServiceException(String.format("수정할 할일이 없습니다.[%s]", task.getSeq())));
+		Task resTask = r.findById(task.getSeq()).orElseThrow(()-> new TaskServiceException(String.format("수정할 할일이 없습니다.[%s]", task)));
 		resTask.setContent(task.getContent());
 		resTask.setTitle(task.getTitle());
 		resTask.setStatus(task.getStatus());
-		return resTask;
+		return r.save(resTask);
 	}
 }

@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import come.home.global.converter.TaskStatusConverter;
+import come.home.global.domain.BasicEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.ToString;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
-public class Task {
+public class Task extends BasicEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long seq;

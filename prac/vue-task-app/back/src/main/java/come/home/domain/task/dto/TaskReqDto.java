@@ -32,13 +32,17 @@ public class TaskReqDto {
 		this.status = status;
 	}
 	
-	public Task toEntity(Long seq, String title, String content, TaskStatus status) {
+	public Task toEntity() {
 		return Task
 				.builder()
-					.seq(seq)
-					.title(title)
-					.content(content)
-					.status(status)
+					.seq(this.seq)
+					.title(this.title)
+					.content(this.content)
+					.status(this.status)
 					.build();
+	}
+	
+	public void setStatus(String status) {
+		this.status = TaskStatus.ofCode(status);
 	}
 }

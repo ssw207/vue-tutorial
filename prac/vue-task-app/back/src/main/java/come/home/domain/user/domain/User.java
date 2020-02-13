@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import come.home.domain.user.dto.UserResDto;
+import come.home.global.domain.BasicEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class User {
+public class User extends BasicEntity{
 	@Id
 	private String userId;
 	private String userName;

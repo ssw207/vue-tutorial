@@ -9,6 +9,8 @@ public interface TaskService {
 	
 	public Task saveTask(Task task);
 	public List<Task> listTask();
-	public Optional<Task> getTask(Task task);
 	public Task modifyTask(Task task);
+	public Optional<Task> getTask(Long seq);
+	public void deleteTask(Task task);
 }
+
