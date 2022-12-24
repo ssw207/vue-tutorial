@@ -3,7 +3,7 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
-import GlobalComponent from './components/global-component'
+import GlobalComponent from './components/global-component.vue'
 
 Vue.component(GlobalComponent.name, GlobalComponent)
 

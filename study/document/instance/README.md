@@ -128,7 +128,7 @@ ex)
 
 ## 라이프 사이클
 
-![lifecycle](./img/lifecycle.png)
+![lifecycle](imgifecycle.png)
 
 ### 1.Createion 컴포넌트 초기화
 
