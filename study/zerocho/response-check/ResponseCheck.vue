@@ -2,10 +2,10 @@
   <div>
     <!--v-bind 설정시 date의 state 데이터를 값으로 쓸수 있다 : 로 축약가능-->
     <div id="screen" :class="state" @click="onClickScreen">{{ message }}</div>
-    <div>
-      <div>평균 시간 : {{result.reduce((a, b) => a + b, 0) / result.length || 0}}ms</div>
+    <template v-show="result.length"> <!--랜더링은 되지만 display none상태. template은 실제 없는 태그로 랜더링됨-->
+      <div>평균 시간 : {{averate}}ms</div>
       <button @click="onReset">리셋</button>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -21,6 +21,11 @@ export default {
       message: '눌려주세요',
       state: 'waiting',
       result: [],
+    }
+  },
+  computed: { // 데이터를 가공할때 사용한다. 데이터가 캐싱되어 계산외에 다른 메시지가 바뀌어서 랜더링이 다시되더라도 재계산되지 않으므로 성능이 좋다
+    averate() {
+      return this.result.reduce((a, b) => a + b, 0) / this.result.length || 0;
     }
   },
   methods: {
