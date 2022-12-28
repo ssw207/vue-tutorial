@@ -1,9 +1,9 @@
 <template>
   <div>
-<!--    v-model 설정시 date의 state 데이터를 값으로 쓸수 있다-->
-    <div id ="screen" v-bind:class="state">{{message}}</div>
+    <!--v-bind 설정시 date의 state 데이터를 값으로 쓸수 있다 : 로 축약가능-->
+    <div id="screen" :class="state" @click="onClickScreen">{{ message }}</div>
     <div>
-      <div>평균 시간 : {{time}}</div>
+      <div>평균 시간 : {{ time }}</div>
       <button @click="onReset">리셋</button>
     </div>
   </div>
@@ -25,26 +25,45 @@ export default {
       this.message = '';
       this.time = 0;
     },
+    onClickScreen() {
+
+      let state = this.state;
+      // console.log('시작', state);
+
+      if (state == 'waiting') {
+        this.message = '준비';
+        this.state = 'ready';
+      } else if (state == 'ready') {
+        this.message = '지금!';
+        this.state = 'now';
+      } else if (state == 'now') {
+        this.message = '준비';
+        this.state = 'waiting';
+      }
+    }
   },
 }
 </script>
 
 <style scoped>
-  #screen {
-    width: 150px;
-    height: 150px;
-    border: 1px solid black;
-    text-align: center;
-    line-height: 150px;
-    font-size: 30px;
-  }
-  #screen.waiting {
-    background: aqua;
-  }
-  #screen.ready {
-    background: red;
-  }
-  #screen.now {
-    background: greenyellow;
-  }
+#screen {
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 150px;
+  font-size: 30px;
+}
+
+#screen.waiting {
+  background: aqua;
+}
+
+#screen.ready {
+  background: red;
+}
+
+#screen.now {
+  background: greenyellow;
+}
 </style>
