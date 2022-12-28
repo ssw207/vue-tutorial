@@ -29,6 +29,7 @@ module.exports = { // 노드 모듈 설정 웹팩설정을 넣는다. 웹팩은 
         filename: '[name].js', // app.js 알아서 app이름이 name에 들어간
         // 합쳐진 js파일이 현재 경로의 dist 폴더에 저장됨
         // 절대경로로 지정해야되는데 C~ 이런식으로 쓸수 없으므로 path 모듈을 사용한다.
-        path: path.join(__dirname, 'dist') // ./zerocho/dist 와 동일함
+        path: path.join(__dirname, 'dist'), // ./zerocho/dist 와 동일함
+        publicPath: '/dist/', // 가상경로. 실제경로는 위에 path와 같다. 웹팩이 빌드한 파일을 가상으로 불러온다.
     },
 }
